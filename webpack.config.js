@@ -12,7 +12,19 @@ module.exports = {
 
   module: {
     loaders: [
-      {test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/}
-    ]
-  }
+      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+      {
+        test: /\.scss/,
+        loader: [
+          'style-loader',
+          'css-loader?modules&sourceMap',
+          'postcss-loader',
+          'sass-loader?sourceMap',
+        ],
+        exclude: /node_modules/,
+      },
+      // add the 'url-loader' module to pack assets into the bundle as well:
+      // { test: /\.(png|jpg|svg|gif)$/, loader: 'url', exclude: /node_modules/ },
+    ],
+  },
 };
