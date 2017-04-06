@@ -6,6 +6,9 @@
   "repository": "https://github.com/sebpearce/phase",
   "author": "Seb Pearce",
   "license": "MIT",
+  "scripts": {
+    "start": "node_modules/.bin/webpack-dev-server --hot"
+  },
   "babel": {
     "presets": [
       "babel-preset-react"

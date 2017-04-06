@@ -1,14 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './style.scss';
+import { render } from 'react-dom';
+import App from './App.js';
 
-class App extends React.Component {
-  render() {
-    return <div>{'Hello world!'}</div>;
-  }
-}
-
-ReactDOM.render(
+render(
   <App />,
   document.getElementById('root')
 );
+
+if (module.hot) {
+  module.hot.accept('./App.js', () => {
+    const NextRootContainer = require('./App.js').default;
+    render(<NextRootContainer />, document.getElementById('root'));
+  });
+}
