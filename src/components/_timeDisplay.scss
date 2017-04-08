@@ -1,0 +1,16 @@
+%timeDisplay {
+  display: inline-block;
+  min-width: 1.1em;
+}
+
+.seconds {
+  @extend %timeDisplay;
+}
+
+.minutes {
+  @extend %timeDisplay;
+}
+
+.hours {
+  @extend %timeDisplay;
+}

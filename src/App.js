@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './App.scss';
 import SelfContainedTimer from './components/SelfContainedTimer';
+import SelfContainedStopwatch from './components/SelfContainedStopwatch';
 
 class App extends React.Component {
   state = {
-    idCounter: 0,
-    timers: [],
+    idCounter: 1,
+    timepieces: [],
   };
 
   incrementCounter = () => {
@@ -22,18 +23,37 @@ class App extends React.Component {
     this.setState(
       prevState => {
         return {
-          timers: [...prevState.timers, { id: id, seconds: seconds }],
+          timepieces: [
+            ...prevState.timepieces,
+            { id: id, seconds: seconds, type: 'timer' },
+          ],
         };
       },
       this.incrementCounter
     );
   };
 
-  makeKillTimerFn = id => {
-    const timers = this.state.timers;
+  createStopwatch = seconds => {
+    const id = this.state.idCounter;
+    let newStopwatch = { id: id, type: 'stopwatch' };
+    if (seconds) {
+      newStopwatch = { ...newStopwatch, limit: seconds };
+    }
+    this.setState(
+      prevState => {
+        return {
+          timepieces: [...prevState.timepieces, newStopwatch],
+        };
+      },
+      this.incrementCounter
+    );
+  };
+
+  makeKillTimepieceFn = id => {
+    const timepieces = this.state.timepieces;
     return () => {
       this.setState({
-        timers: timers.filter(t => t.id !== id),
+        timepieces: timepieces.filter(t => t.id !== id),
       });
     };
   };
@@ -41,20 +61,47 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.appContainer}>
-        {this.state.timers.map(t => (
-          <SelfContainedTimer
-            key={t.id}
-            seconds={t.seconds}
-            kill={this.makeKillTimerFn(t.id)}
-          />
-        ))}
         <button
           onClick={() => {
-            this.createTimer(400);
+            this.createStopwatch();
+          }}
+        >
+          MAKE NEW STOPWATCH
+        </button><br />
+        <button
+          onClick={() => {
+            this.createStopwatch(5);
+          }}
+        >
+          MAKE NEW STOPWATCH WITH 5s LIMIT
+        </button><br />
+        <button
+          onClick={() => {
+            this.createTimer(600);
           }}
         >
           MAKE NEW TIMER
         </button>
+        <pre>{JSON.stringify(this.state.timepieces, null, '  ')}</pre>
+        {this.state.timepieces.map(t => {
+          if (t.type === 'timer') {
+            return (
+              <SelfContainedTimer
+                key={t.id}
+                seconds={t.seconds}
+                kill={this.makeKillTimepieceFn(t.id)}
+              />
+            );
+          } else if (t.type === 'stopwatch') {
+            return (
+              <SelfContainedStopwatch
+                key={t.id}
+                limit={t.limit}
+                kill={this.makeKillTimepieceFn(t.id)}
+              />
+            );
+          }
+        })}
       </div>
     );
   }

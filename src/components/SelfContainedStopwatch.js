@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SelfContainedTimer.scss';
+import styles from './SelfContainedStopwatch.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
 
 const SecondsDisplay = ({ seconds }) => {
@@ -26,9 +26,9 @@ const HoursDisplay = ({ seconds }) => {
   );
 };
 
-class SelfContainedTimer extends React.Component {
+class SelfContainedStopwatch extends React.Component {
   state = {
-    secondsLeft: this.props.seconds,
+    secondsElapsed: 0,
     paused: false,
   };
 
@@ -47,7 +47,11 @@ class SelfContainedTimer extends React.Component {
   };
 
   resume = () => {
-    if (this.state.paused && this.state.secondsLeft > 0) this.start();
+    if (
+      this.state.paused &&
+      (!this.props.limit || this.state.secondsElapsed < this.props.limit)
+    )
+      this.start();
   };
 
   pause = () => {
@@ -57,24 +61,24 @@ class SelfContainedTimer extends React.Component {
 
   reset = () => {
     clearInterval(this.state.interval);
-    this.setState({ secondsLeft: this.props.seconds }, this.start);
+    this.setState({ secondsElapsed: 0 }, this.start);
   };
 
   tick = () => {
-    const target = this.state.secondsLeft - 1;
-    if (target >= 0) {
-      this.setState({ secondsLeft: target });
-    } else {
+    const target = this.state.secondsElapsed + 1;
+    if (this.props.limit && target > this.props.limit) {
       this.pause();
+    } else {
+      this.setState({ secondsElapsed: target });
     }
   };
-  
+
   render() {
     return (
       <div className={styles.timepiece}>
-        <HoursDisplay seconds={this.state.secondsLeft} />:
-        <MinutesDisplay seconds={this.state.secondsLeft} />:
-        <SecondsDisplay seconds={this.state.secondsLeft} />
+        <HoursDisplay seconds={this.state.secondsElapsed} />:
+        <MinutesDisplay seconds={this.state.secondsElapsed} />:
+        <SecondsDisplay seconds={this.state.secondsElapsed} />
 
         <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
@@ -85,12 +89,12 @@ class SelfContainedTimer extends React.Component {
   }
 }
 
-SelfContainedTimer.defaultProps = {
-  seconds: 1500,
-};
+// SelfContainedStopwatch.defaultProps = {
+//   seconds: 7200,
+// };
 
-SelfContainedTimer.propTypes = {
-  seconds: React.PropTypes.number.isRequired,
-};
+// SelfContainedStopwatch.propTypes = {
+//   seconds: React.PropTypes.number.isRequired,
+// };
 
-export default SelfContainedTimer;
+export default SelfContainedStopwatch;
