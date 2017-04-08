@@ -79,6 +79,7 @@ class SelfContainedTimer extends React.Component {
         <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
         <button onClick={this.reset}>RESET</button>
+        <button onClick={this.props.kill}>KILL</button>
       </div>
     );
   }
