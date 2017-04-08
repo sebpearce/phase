@@ -11,7 +11,7 @@ class App extends React.Component {
     timepieces: [
       {
         id: 1,
-        seconds: 600,
+        seconds: 5,
         type: 'timer',
       },
       {

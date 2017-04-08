@@ -31,6 +31,7 @@ class SelfContainedTimer extends React.Component {
   state = {
     secondsLeft: this.props.seconds,
     paused: false,
+    finished: false,
   };
 
   componentDidMount() {
@@ -58,23 +59,26 @@ class SelfContainedTimer extends React.Component {
 
   reset = () => {
     clearInterval(this.state.interval);
-    this.setState({ secondsLeft: this.props.seconds }, this.start);
+    this.setState(
+      { secondsLeft: this.props.seconds, finished: false },
+      this.start
+    );
   };
 
   tick = () => {
     const target = this.state.secondsLeft - 1;
-    if (target >= 0) {
-      this.setState({ secondsLeft: target });
-    } else {
+    this.setState({ secondsLeft: target });
+    if (target <= 0) {
+      this.setState({ finished: true });
       this.pause();
     }
   };
-  
+
   render() {
     return (
       <div className={styles.timepiece}>
         <div className={styles.iconContainer}>
-          <Icon id='hourglass' />
+          <Icon id="hourglass" />
         </div>
         <div className={styles.timeContainer}>
           <HoursDisplay seconds={this.state.secondsLeft} />:

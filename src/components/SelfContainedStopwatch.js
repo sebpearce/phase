@@ -31,6 +31,7 @@ class SelfContainedStopwatch extends React.Component {
   state = {
     secondsElapsed: 0,
     paused: false,
+    finished: false,
   };
 
   componentDidMount() {
@@ -62,13 +63,14 @@ class SelfContainedStopwatch extends React.Component {
 
   reset = () => {
     clearInterval(this.state.interval);
-    this.setState({ secondsElapsed: 0 }, this.start);
+    this.setState({ secondsElapsed: 0, finished: false }, this.start);
   };
 
   tick = () => {
     const target = this.state.secondsElapsed + 1;
-    if (this.props.limit && target > this.props.limit) {
+    if (this.props.limit && target >= this.props.limit) {
       this.pause();
+      this.setState({ secondsElapsed: target, finished: true });
     } else {
       this.setState({ secondsElapsed: target });
     }
@@ -78,7 +80,7 @@ class SelfContainedStopwatch extends React.Component {
     return (
       <div className={styles.timepiece}>
         <div className={styles.iconContainer}>
-          <Icon id='stopwatch' />
+          <Icon id="stopwatch" />
         </div>
         <div className={styles.timeContainer}>
           <HoursDisplay seconds={this.state.secondsElapsed} />:
