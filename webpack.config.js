@@ -1,8 +1,8 @@
 module.exports = {
-  entry: './index.js',
+  entry: './src/index.js',
   output: {
     filename: 'bundle.js',
-    path: __dirname,
+    path: __dirname.concat('/dist'),
   },
 
   // allows us to see sourcemap of the js at webpack://
