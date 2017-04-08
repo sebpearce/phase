@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SelfContainedStopwatch.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import Icon from '../Icon';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -76,10 +77,14 @@ class SelfContainedStopwatch extends React.Component {
   render() {
     return (
       <div className={styles.timepiece}>
-        <HoursDisplay seconds={this.state.secondsElapsed} />:
-        <MinutesDisplay seconds={this.state.secondsElapsed} />:
-        <SecondsDisplay seconds={this.state.secondsElapsed} />
-
+        <div className={styles.iconContainer}>
+          <Icon id='stopwatch' />
+        </div>
+        <div className={styles.timeContainer}>
+          <HoursDisplay seconds={this.state.secondsElapsed} />:
+          <MinutesDisplay seconds={this.state.secondsElapsed} />:
+          <SecondsDisplay seconds={this.state.secondsElapsed} />
+        </div>
         <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
         <button onClick={this.reset}>RESET</button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SelfContainedTimer.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import Icon from '../Icon';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -72,10 +73,14 @@ class SelfContainedTimer extends React.Component {
   render() {
     return (
       <div className={styles.timepiece}>
-        <HoursDisplay seconds={this.state.secondsLeft} />:
-        <MinutesDisplay seconds={this.state.secondsLeft} />:
-        <SecondsDisplay seconds={this.state.secondsLeft} />
-
+        <div className={styles.iconContainer}>
+          <Icon id='hourglass' />
+        </div>
+        <div className={styles.timeContainer}>
+          <HoursDisplay seconds={this.state.secondsLeft} />:
+          <MinutesDisplay seconds={this.state.secondsLeft} />:
+          <SecondsDisplay seconds={this.state.secondsLeft} />
+        </div>
         <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
         <button onClick={this.reset}>RESET</button>

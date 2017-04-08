@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom';
 import styles from './App.scss';
 import SelfContainedTimer from './components/SelfContainedTimer';
 import SelfContainedStopwatch from './components/SelfContainedStopwatch';
+import IconDefs from './IconDefs';
 
 class App extends React.Component {
   state = {
-    idCounter: 1,
-    timepieces: [],
+    idCounter: 3,
+    timepieces: [
+      {
+        id: 1,
+        seconds: 600,
+        type: 'timer',
+      },
+      {
+        id: 2,
+        type: 'stopwatch',
+      },
+    ],
   };
 
   incrementCounter = () => {
@@ -61,6 +72,7 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.appContainer}>
+        <IconDefs />
         <button
           onClick={() => {
             this.createStopwatch();
@@ -82,7 +94,7 @@ class App extends React.Component {
         >
           MAKE NEW TIMER
         </button>
-        <pre>{JSON.stringify(this.state.timepieces, null, '  ')}</pre>
+        {/* <pre>{JSON.stringify(this.state.timepieces, null, '  ')}</pre> */}
         {this.state.timepieces.map(t => {
           if (t.type === 'timer') {
             return (

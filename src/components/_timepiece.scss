@@ -4,10 +4,20 @@
   border-radius: 5px;
   padding: 0.3em 0.5em;
   box-shadow: 2px 2px 4px 0px #dfdfdf;
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: 600;
+  display: flex;
 
   &:nth-of-type(n+2) {
     margin-top: 0.3em;
   }
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  padding: 0 0.3em;
+}
+
+.timeContainer {
 }
