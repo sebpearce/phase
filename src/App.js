@@ -7,7 +7,7 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.appContainer}>
-        <SelfContainedTimer seconds={500} />
+        <SelfContainedTimer seconds={5} />
       </div>
     );
   }
