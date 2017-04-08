@@ -1,0 +1,21 @@
+.selfContainedTimer {
+  font-size: 4rem;
+  font-weight: 600;
+}
+
+%timeDisplay {
+  display: inline-block;
+  min-width: 1.1em;
+}
+
+.seconds {
+  @extend %timeDisplay;
+}
+
+.minutes {
+  @extend %timeDisplay;
+}
+
+.hours {
+  @extend %timeDisplay;
+}

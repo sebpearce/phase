@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './style.scss';
+import styles from './App.scss';
 import SelfContainedTimer from './components/SelfContainedTimer';
 
 class App extends React.Component {
   render() {
-    return <SelfContainedTimer />;
+    return (
+      <div className={styles.appContainer}>
+        <SelfContainedTimer seconds={500} />
+      </div>
+    );
   }
 }
 

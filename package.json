@@ -9,7 +9,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --content-base dist/",
     "build": "webpack",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "dependencies": {
     "babel-core": "^6.24.0",
