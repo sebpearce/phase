@@ -1,7 +1,6 @@
 import React from 'react';
-import styles from './SelfContainedStopwatch.scss';
+import styles from './SimpleTimer.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
-import Icon from '../Icon';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -27,9 +26,9 @@ const HoursDisplay = ({ seconds }) => {
   );
 };
 
-class SelfContainedStopwatch extends React.Component {
+class SimpleTimer extends React.Component {
   state = {
-    secondsElapsed: 0,
+    secondsLeft: this.props.seconds,
     paused: false,
     finished: false,
   };
@@ -49,11 +48,7 @@ class SelfContainedStopwatch extends React.Component {
   };
 
   resume = () => {
-    if (
-      this.state.paused &&
-      (!this.props.limit || this.state.secondsElapsed < this.props.limit)
-    )
-      this.start();
+    if (this.state.paused && this.state.secondsLeft > 0) this.start();
   };
 
   pause = () => {
@@ -63,41 +58,45 @@ class SelfContainedStopwatch extends React.Component {
 
   reset = () => {
     clearInterval(this.state.interval);
-    this.setState({ secondsElapsed: 0, finished: false }, this.start);
+    this.setState(
+      { secondsLeft: this.props.seconds, finished: false },
+      this.start
+    );
   };
 
   tick = () => {
-    const target = this.state.secondsElapsed + 1;
-    if (this.props.limit && target >= this.props.limit) {
+    const target = this.state.secondsLeft - 1;
+    this.setState({ secondsLeft: target });
+    if (target <= 0) {
+      this.setState({ finished: true });
       this.pause();
-      this.setState({ secondsElapsed: target, finished: true });
-    } else {
-      this.setState({ secondsElapsed: target });
     }
   };
 
   render() {
     return (
-      <div className={styles.timepiece}>
-        <div className={styles.iconContainer}>
-          <Icon id="stopwatch" />
-        </div>
+      <div className={styles.simpleTimer}>
         <div className={styles.timeContainer}>
-          <HoursDisplay seconds={this.state.secondsElapsed} />:
-          <MinutesDisplay seconds={this.state.secondsElapsed} />:
-          <SecondsDisplay seconds={this.state.secondsElapsed} />
+          <HoursDisplay seconds={this.state.secondsLeft} />:
+          <MinutesDisplay seconds={this.state.secondsLeft} />:
+          <SecondsDisplay seconds={this.state.secondsLeft} />
         </div>
-        <button onClick={this.pause}>PAUSE</button>
+        {/* <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
         <button onClick={this.reset}>RESET</button>
-        <button onClick={this.props.kill}>KILL</button>
+        <button onClick={this.props.kill}>KILL</button> */}
       </div>
     );
   }
 }
 
-SelfContainedStopwatch.propTypes = {
-  seconds: React.PropTypes.number
+SimpleTimer.defaultProps = {
+  seconds: 1500,
 };
 
-export default SelfContainedStopwatch;
+SimpleTimer.propTypes = {
+  seconds: React.PropTypes.number.isRequired,
+  until: React.PropTypes.string
+};
+
+export default SimpleTimer;

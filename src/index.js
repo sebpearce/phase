@@ -1,9 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from './App.js';
+import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const history = createBrowserHistory();
 
 render(
-  <App />,
+  <Router history={history}>
+    <App />
+  </Router>,
   document.getElementById('root')
 );
 

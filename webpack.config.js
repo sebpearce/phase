@@ -29,12 +29,12 @@ module.exports = {
       // { test: /\.(png|jpg|svg|gif)$/, loader: 'url', exclude: /node_modules/ },
     ],
   },
-
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false,
-      },
-    }),
-  ],
+  
+  // plugins: [
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     compressor: {
+  //       warnings: false,
+  //     },
+  //   }),
+  // ],
 };
