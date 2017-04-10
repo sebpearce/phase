@@ -26,10 +26,9 @@ const HoursDisplay = ({ seconds }) => {
   );
 };
 
-class SimpleTimer extends React.Component {
+class UntilTimer extends React.Component {
   state = {
-    secondsLeft: this.props.seconds,
-    paused: false,
+    secondsLeft: this.calculateSecondsLeft(this.props.finishAt),
     finished: false,
   };
 
@@ -41,31 +40,18 @@ class SimpleTimer extends React.Component {
     clearInterval(this.state.interval);
   }
 
+  calculateSecondsLeft(finishAt) {
+    return parseInt((finishAt - Date.now()) / 1000, 10);
+  }
+
   start = () => {
     clearInterval(this.state.interval);
-    const interval = setInterval(this.tick, 1000);
-    this.setState({ interval, paused: false });
-  };
-
-  resume = () => {
-    if (this.state.paused && this.state.secondsLeft > 0) this.start();
-  };
-
-  pause = () => {
-    clearInterval(this.state.interval);
-    this.setState({ paused: true });
-  };
-
-  reset = () => {
-    clearInterval(this.state.interval);
-    this.setState(
-      { secondsLeft: this.props.seconds, finished: false },
-      this.start
-    );
+    const interval = setInterval(this.tick, 200);
+    this.setState({ interval });
   };
 
   tick = () => {
-    const target = this.state.secondsLeft - 1;
+    const target = this.calculateSecondsLeft(this.props.finishAt);
     this.setState({ secondsLeft: target });
     if (target <= 0) {
       this.setState({ finished: true });
@@ -87,21 +73,17 @@ class SimpleTimer extends React.Component {
           ]}
           <SecondsDisplay seconds={this.state.secondsLeft} />
         </div>
-        {/* <button onClick={this.pause}>PAUSE</button>
-        <button onClick={this.resume}>RESUME</button>
-        <button onClick={this.reset}>RESET</button>
-        <button onClick={this.props.kill}>KILL</button> */}
       </div>
     );
   }
 }
 
-SimpleTimer.defaultProps = {
-  seconds: 600,
+UntilTimer.defaultProps = {
+  finishAt: Date.now() + 600000,
 };
 
-SimpleTimer.propTypes = {
-  seconds: React.PropTypes.number.isRequired,
+UntilTimer.propTypes = {
+  finishAt: React.PropTypes.number.isRequired,
 };
 
-export default SimpleTimer;
+export default UntilTimer;

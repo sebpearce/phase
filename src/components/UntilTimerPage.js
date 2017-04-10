@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './SimpleTimerPage.scss';
+import styles from './UntilTimerPage.scss';
 import SimpleInputModal from './SimpleInputModal';
-import SimpleTimer from './SimpleTimer';
+import UntilTimer from './UntilTimer';
 
-class SimpleTimerPage extends React.Component {
+class UntilTimerPage extends React.Component {
   state = {
     waitingForInput: false,
     input: ''
@@ -12,25 +12,25 @@ class SimpleTimerPage extends React.Component {
   componentDidMount() {}
   
   componentWillUnmount() {}
-
+  
   render() {
     return (
       <div className={styles.simpleTimerPage}>
         {this.state.waitingForInput
           ? <SimpleInputModal />
-          : <SimpleTimer seconds={600} />}
+          : <UntilTimer finishAt={Date.now() + 800000} />}
       </div>
     );
   }
 }
 
-// SimpleTimerPage.defaultProps = {
+// UntilTimerPage.defaultProps = {
 //   seconds: 1500,
 // };
 //
-// SimpleTimerPage.propTypes = {
+// UntilTimerPage.propTypes = {
 //   seconds: React.PropTypes.number.isRequired,
 //   until: React.PropTypes.string,
 // };
 
-export default SimpleTimerPage;
+export default UntilTimerPage;

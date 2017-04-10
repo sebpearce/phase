@@ -14,9 +14,9 @@ class TimerMenu extends React.Component {
                 <Icon id="hourglass" />
               </li>
             </NavLink>
-            <NavLink to="/stopwatch" className={styles.item} activeClassName={styles.selected}>
+            <NavLink to="/until" className={styles.item} activeClassName={styles.selected}>
               <li>
-                <Icon id="stopwatch" />
+                <Icon id="hourglass" />
               </li>
             </NavLink>
             <NavLink to="/foo" className={styles.item} activeClassName={styles.selected}>
