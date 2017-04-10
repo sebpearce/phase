@@ -24,6 +24,7 @@
   border: 3px solid transparent;
   border-radius: 100px;
   background: #111;
+  transition: background 0.2s ease;
 
   svg {
     width: 40px;
@@ -34,22 +35,31 @@
   &:nth-of-type(n+2) {
     margin-top: 2em;
   }
-}
-
-.item {
-  @extend %listItem;
-}
-
-.selected {
-  @extend %listItem;
 
   &:after {
     position: absolute;
     width: 100px;
     height: 100px;
     border-radius: 100px;
-    border: 3px solid #333;
+    border: 3px solid transparent;
     z-index: -1;
     content: '';
+    transition: border-color 0.2s ease;
+  }
+}
+
+.item {
+  @extend %listItem;
+
+  &:hover:not(.selected) {
+    background: lighten(#111, 5%);
+  }
+}
+
+.selected {
+  @extend %listItem;
+  
+  &:after {
+    border-color: #333;
   }
 }
