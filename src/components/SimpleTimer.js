@@ -28,7 +28,7 @@ const HoursDisplay = ({ seconds }) => {
 
 class SimpleTimer extends React.Component {
   state = {
-    secondsLeft: this.props.seconds,
+    secondsLeft: this.calculateSecondsLeft(this.props.finishAt),
     paused: false,
     finished: false,
   };
@@ -41,9 +41,13 @@ class SimpleTimer extends React.Component {
     clearInterval(this.state.interval);
   }
 
+  calculateSecondsLeft(finishAt) {
+    return parseInt((finishAt - Date.now()) / 1000, 10);
+  }
+
   start = () => {
     clearInterval(this.state.interval);
-    const interval = setInterval(this.tick, 1000);
+    const interval = setInterval(this.tick, 100);
     this.setState({ interval, paused: false });
   };
 
@@ -65,7 +69,7 @@ class SimpleTimer extends React.Component {
   };
 
   tick = () => {
-    const target = this.state.secondsLeft - 1;
+    const target = this.calculateSecondsLeft(this.props.finishAt);
     this.setState({ secondsLeft: target });
     if (target <= 0) {
       this.setState({ finished: true });
@@ -93,12 +97,11 @@ class SimpleTimer extends React.Component {
 }
 
 SimpleTimer.defaultProps = {
-  seconds: 1500,
+  seconds: 600,
 };
 
 SimpleTimer.propTypes = {
-  seconds: React.PropTypes.number.isRequired,
-  until: React.PropTypes.string,
+  finishAt: React.PropTypes.number.isRequired,
 };
 
 export default SimpleTimer;

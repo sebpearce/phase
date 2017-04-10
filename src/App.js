@@ -5,7 +5,7 @@ import styles from './App.scss';
 import IconDefs from './IconDefs';
 import TimerMenu from './components/TimerMenu';
 import MultiTimerPage from './MultiTimerPage';
-import SimpleTimer from './components/SimpleTimer';
+import SimpleTimerPage from './components/SimpleTimerPage';
 
 class App extends React.Component {
   render() {
@@ -16,9 +16,9 @@ class App extends React.Component {
           <TimerMenu />
         </div>
         <div className={styles.main}>
-          <Route exact path="/" component={SimpleTimer} />
-          <Route exact path="/stopwatch" component={SimpleTimer} />
-          <Route exact path="/foo" component={SimpleTimer} />
+          <Route exact path="/" component={SimpleTimerPage} />
+          <Route exact path="/stopwatch" component={SimpleTimerPage} />
+          <Route exact path="/foo" component={SimpleTimerPage} />
         </div>
         <div className={styles.settingsMenu}>
         </div>
