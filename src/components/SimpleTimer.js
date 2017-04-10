@@ -77,8 +77,10 @@ class SimpleTimer extends React.Component {
     return (
       <div className={styles.simpleTimer}>
         <div className={styles.timeContainer}>
-          <HoursDisplay seconds={this.state.secondsLeft} />:
-          <MinutesDisplay seconds={this.state.secondsLeft} />:
+          {this.state.secondsLeft >= 3600 &&
+            [<HoursDisplay seconds={this.state.secondsLeft} />, ':']}
+          {this.state.secondsLeft >= 60 &&
+            [<MinutesDisplay seconds={this.state.secondsLeft} />, ':']}
           <SecondsDisplay seconds={this.state.secondsLeft} />
         </div>
         {/* <button onClick={this.pause}>PAUSE</button>
@@ -96,7 +98,7 @@ SimpleTimer.defaultProps = {
 
 SimpleTimer.propTypes = {
   seconds: React.PropTypes.number.isRequired,
-  until: React.PropTypes.string
+  until: React.PropTypes.string,
 };
 
 export default SimpleTimer;
