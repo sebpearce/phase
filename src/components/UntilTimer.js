@@ -1,6 +1,11 @@
 import React from 'react';
 import styles from './UntilTimer.scss';
-import { parseSeconds, parseMinutes, parseHours, convertUnixTime } from '../utils/parseTime';
+import {
+  parseSeconds,
+  parseMinutes,
+  parseHours,
+  convertUnixTime,
+} from '../utils/parseTime';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -26,14 +31,18 @@ const HoursDisplay = ({ seconds }) => {
   );
 };
 
-const UntilDisplay = ({ finishAt }) => {
-  const result = (new Date(finishAt)).get
+const UntilDisplay = ({ finishAt, isFinished }) => {
+  const adverb = isFinished ? 'since' : 'until';
+  const result = new Date(finishAt).get;
+  const className = isFinished
+    ? styles.untilDisplayFinished
+    : styles.untilDisplay;
   return (
-    <span className={styles.untilDisplay}>
-      until {convertUnixTime(finishAt)}
+    <span className={className}>
+      {adverb + ' ' + convertUnixTime(finishAt)}
     </span>
   );
-}
+};
 
 class UntilTimer extends React.Component {
   state = {
@@ -55,36 +64,54 @@ class UntilTimer extends React.Component {
     return parseInt((finishAt - Date.now()) / 1000, 10);
   }
 
+  calculateSecondsSince(finishAt) {
+    return parseInt((Date.now() - finishAt) / 1000, 10);
+  }
+
   start = () => {
     clearInterval(this.state.interval);
     const interval = setInterval(this.tick, 200);
-    this.setState({ interval });
+    this.setState({ interval, finished: false });
   };
 
   tick = () => {
-    const target = this.calculateSecondsLeft(this.props.finishAt);
+    const finishAt = this.props.finishAt;
+    let target;
+    if (this.state.finished) {
+      target = this.calculateSecondsSince(finishAt);
+    } else {
+      target = this.calculateSecondsLeft(finishAt);
+    }
     this.setState({ secondsLeft: target });
-    if (target <= 0) {
-      this.setState({ finished: true });
-      this.pause();
+
+    if (finishAt <= Date.now()) {
+      if (!this.state.finished) {
+        this.setState({ finished: true });
+      }
     }
   };
 
   render() {
+    const className = this.state.finished
+      ? styles.timeContainerFinished
+      : styles.timeContainer;
     return (
       <div className={styles.untilTimer}>
-        <div className={styles.timeContainer}>
+        <div className={className}>
           {this.state.secondsLeft >= 3600 && [
-            <HoursDisplay seconds={this.state.secondsLeft} />,
+            <HoursDisplay seconds={this.state.secondsLeft} key={'hrs'} />,
             ':',
           ]}
           {this.state.secondsLeft >= 60 && [
-            <MinutesDisplay seconds={this.state.secondsLeft} />,
+            <MinutesDisplay seconds={this.state.secondsLeft} key={'mins'} />,
             ':',
           ]}
-          <SecondsDisplay seconds={this.state.secondsLeft} />
+          <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />
         </div>
-        <UntilDisplay finishAt={this.props.finishAt} />
+        <UntilDisplay
+          finishAt={this.props.finishAt}
+          isFinished={this.state.finished}
+        />
       </div>
     );
   }

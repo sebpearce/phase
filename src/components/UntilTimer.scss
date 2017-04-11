@@ -1,10 +1,18 @@
 @import 'timeDisplay';
+@import '../global';
 
 .untilDisplay {
   margin-right: 0.2em;
   font-weight: 700;
   font-size: 1.7em;
   color: white;
+
+}
+
+.untilDisplayFinished {
+  @extend .untilDisplay;
+
+  color: $timer-finished-color;
 }
 
 .untilTimer {

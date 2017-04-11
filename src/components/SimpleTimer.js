@@ -80,14 +80,14 @@ class SimpleTimer extends React.Component {
       <div className={styles.simpleTimer}>
         <div className={styles.timeContainer}>
           {this.state.secondsLeft >= 3600 && [
-            <HoursDisplay seconds={this.state.secondsLeft} />,
+            <HoursDisplay seconds={this.state.secondsLeft} key={'hrs'} />,
             ':',
           ]}
           {this.state.secondsLeft >= 60 && [
-            <MinutesDisplay seconds={this.state.secondsLeft} />,
+            <MinutesDisplay seconds={this.state.secondsLeft} key={'mins'} />,
             ':',
           ]}
-          <SecondsDisplay seconds={this.state.secondsLeft} />
+          <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />
         </div>
         {/* <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>
