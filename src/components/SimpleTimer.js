@@ -34,11 +34,13 @@ class SimpleTimer extends React.Component {
   };
 
   componentDidMount() {
+    document.addEventListener('keydown', this.props.handleKeyDown);
     this.start();
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
+    document.removeEventListener('keydown', this.props.handleKeyDown);
   }
 
   start = () => {

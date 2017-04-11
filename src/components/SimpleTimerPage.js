@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './SimpleTimerPage.scss';
 import SimpleInputModal from './SimpleInputModal';
 import SimpleTimer from './SimpleTimer';
+import { convertInputToNumber } from '../utils/parseTime';
+import { validateCountdownInput } from '../utils/validateInput';
 
 class SimpleTimerPage extends React.Component {
   state = {
@@ -9,65 +11,41 @@ class SimpleTimerPage extends React.Component {
     input: '',
   };
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
+  // TODO: Tests for helpers
+  // TODO: Handle untilTimer after it hits target time ("since" and go darker)
 
   setInput = e => {
-    if (this.validate(e.target.value)) {
+    if (validateCountdownInput(e.target.value)) {
       this.setState({ input: e.target.value });
-      this.convertInputToNumber(e.target.value);
+      convertInputToNumber(e.target.value);
     }
   };
 
-  parseInputAsDigital = (input) => {
-    const t = input.split(/[:.]/);
-    const startingIndex = Math.abs((t.length - 3) % 3);
-    const factors = [3600, 60, 1];
-    return t.reduce((total, val, i) => {
-      return total + (val * factors[i + startingIndex]);
-    }, 0);
-  }
-
-  getNumberFromMatch(match) {
-    return (match && match.length > 1) ? parseInt(match[1], 10) : 0;
-  }
-
-  parseInputAsHuman = (input) => {
-    let h, m, s = 0;
-    h = /(\d+)\s*(?:h(?:r|rs|ours?)?)/i.exec(input);
-    const hours = this.getNumberFromMatch(h);
-    m = /(\d+)\s*(?:m(?:ins?|inutes?)?)/i.exec(input);
-    const minutes = this.getNumberFromMatch(m);
-    s = /(\d+)\s*(?:s(ecs?|econds?)?)/i.exec(input);
-    const seconds = this.getNumberFromMatch(s);
-    return hours * 3600 + minutes * 60 + seconds;
-  };
-
-  convertInputToNumber = input => {
-    let result;
-    if (/[:.]/.test(input) || /^\s*\d+\s*$/.test(input)) {
-      result = this.parseInputAsDigital(input);
-    } else {
-      result = this.parseInputAsHuman(input);
-    }
-    return result;
+  cancelTimer = () => {
+    this.setState({
+      waitingForInput: true,
+      input: '',
+    });
   };
 
   submitInput = () => {
     this.setState({ waitingForInput: false });
   };
 
-  handleKeyDown = e => {
-    if (e.keyCode === 13) {
-      this.submitInput();
+  handleInputKeyDown = e => {
+    switch (e.keyCode) {
+      case 13:
+        this.submitInput();
+        break;
     }
   };
 
-  validate = input => {
-    const countdownFormat = /^((\d+\s?h(r|rs|ours?)?)?\s*?(\d+\s?m(ins?|inutes?)?)?\s*(\d+\s?s(ecs?|econds?)?)?|\d+(:(0[0-9]|[1-5]\d))?(:(0[0-9]|[1-5]\d))?)$/i;
-    console.log(input, countdownFormat.test(input) && 'ok');
-    return countdownFormat.test(input);
+  handleTimerKeyDown = e => {
+    switch (e.keyCode) {
+      case 27:
+        this.cancelTimer();
+        break;
+    }
   };
 
   render() {
@@ -77,9 +55,12 @@ class SimpleTimerPage extends React.Component {
           ? <SimpleInputModal
               question={'How long?'}
               setInput={this.setInput}
-              handleKeyDown={this.handleKeyDown}
+              handleKeyDown={this.handleInputKeyDown}
             />
-          : <SimpleTimer seconds={this.convertInputToNumber(this.state.input)} />}
+          : <SimpleTimer
+              seconds={convertInputToNumber(this.state.input)}
+              handleKeyDown={this.handleTimerKeyDown}
+            />}
       </div>
     );
   }
