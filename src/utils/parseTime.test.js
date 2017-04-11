@@ -99,3 +99,10 @@ describe('parseHours', () => {
     expect(parseTime.parseHours(seconds)).toBe('02');
   });
 });
+
+describe('convertUnixTime', () => {
+  test('when time is 1491793663611 (13:07)', () => {
+    const time = 1491793663611;
+    expect(parseTime.convertUnixTime(time)).toBe('13:07');
+  });
+});

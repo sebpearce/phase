@@ -16,3 +16,8 @@ export const parseHours = (totalSeconds) => {
   const hr = Math.floor(totalSeconds / 3600);
   return zeroPad(hr);
 }
+
+export const convertUnixTime = (time) => {
+  const date = new Date(time);
+  return [zeroPad(date.getHours()), zeroPad(date.getMinutes())].join(':');
+}

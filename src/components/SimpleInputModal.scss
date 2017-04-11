@@ -1,0 +1,26 @@
+@import '../global';
+
+.container {
+
+}
+
+.question {
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  font-size: 7vw;
+}
+
+.input {
+  font-size: 4vw;
+  border: 0;
+  border-radius: 5px;
+  background: $text-input-background;
+  padding: 0.2em;
+  text-align: center;
+  color: #fff;
+  outline: none;
+  margin-top: 0.5em;
+  font-weight: $text-input-font-weight;
+  font-family: $default-font-family;
+}

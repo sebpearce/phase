@@ -29,6 +29,11 @@ module.exports = {
       // { test: /\.(png|jpg|svg|gif)$/, loader: 'url', exclude: /node_modules/ },
     ],
   },
+
+  // fixes problem with reloading pages that are not root URL
+  devServer: {
+      historyApiFallback: true
+  }
   
   // plugins: [
   //   new webpack.optimize.UglifyJsPlugin({

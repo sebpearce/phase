@@ -18,8 +18,8 @@ class App extends React.Component {
         </div>
         <div className={styles.main}>
           <Route exact path="/" component={SimpleTimerPage} />
-          <Route exact path="/until" component={UntilTimerPage} />
-          <Route exact path="/foo" component={SimpleTimerPage} />
+          <Route path="/until" component={UntilTimerPage} />
+          <Route path="/foo" component={SimpleTimerPage} />
         </div>
         <div className={styles.settingsMenu}>
         </div>

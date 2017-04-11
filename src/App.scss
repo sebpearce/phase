@@ -1,8 +1,5 @@
 @import 'normalize';
-
-$default-font-family: 'Helvetica Neue', 'Arial', sans-serif;
-$default-text-color: #888;
-$default-background: #000;
+@import 'global';
 
 html {
   font-family: $default-font-family;

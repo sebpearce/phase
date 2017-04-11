@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './SimpleTimer.scss';
-import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import styles from './UntilTimer.scss';
+import { parseSeconds, parseMinutes, parseHours, convertUnixTime } from '../utils/parseTime';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -25,6 +25,15 @@ const HoursDisplay = ({ seconds }) => {
     </span>
   );
 };
+
+const UntilDisplay = ({ finishAt }) => {
+  const result = (new Date(finishAt)).get
+  return (
+    <span className={styles.untilDisplay}>
+      until {convertUnixTime(finishAt)}
+    </span>
+  );
+}
 
 class UntilTimer extends React.Component {
   state = {
@@ -61,7 +70,7 @@ class UntilTimer extends React.Component {
 
   render() {
     return (
-      <div className={styles.simpleTimer}>
+      <div className={styles.untilTimer}>
         <div className={styles.timeContainer}>
           {this.state.secondsLeft >= 3600 && [
             <HoursDisplay seconds={this.state.secondsLeft} />,
@@ -73,6 +82,7 @@ class UntilTimer extends React.Component {
           ]}
           <SecondsDisplay seconds={this.state.secondsLeft} />
         </div>
+        <UntilDisplay finishAt={this.props.finishAt} />
       </div>
     );
   }
@@ -83,7 +93,7 @@ UntilTimer.defaultProps = {
 };
 
 UntilTimer.propTypes = {
-  finishAt: React.PropTypes.number.isRequired,
+  finishAt: React.PropTypes.instanceOf(Date).isRequired,
 };
 
 export default UntilTimer;

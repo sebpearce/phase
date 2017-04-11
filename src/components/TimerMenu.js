@@ -11,12 +11,12 @@ class TimerMenu extends React.Component {
           <ul className={styles.menu}>
             <NavLink exact to="/" className={styles.item} activeClassName={styles.selected}>
               <li>
-                <Icon id="hourglass" />
+                <Icon id="timer" />
               </li>
             </NavLink>
             <NavLink to="/until" className={styles.item} activeClassName={styles.selected}>
               <li>
-                <Icon id="hourglass" />
+                <Icon id="timer-until" />
               </li>
             </NavLink>
             <NavLink to="/foo" className={styles.item} activeClassName={styles.selected}>
