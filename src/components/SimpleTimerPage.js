@@ -8,12 +8,10 @@ import { validateCountdownInput } from '../utils/validateInput';
 class SimpleTimerPage extends React.Component {
   state = {
     waitingForInput: true,
-    // paused: false,
     input: '',
   };
 
   // TODO: Tests for helpers
-  // TODO: Handle untilTimer after it hits target time ("since" and go darker)
 
   setInput = e => {
     if (validateCountdownInput(e.target.value)) {
@@ -28,14 +26,6 @@ class SimpleTimerPage extends React.Component {
       input: '',
     });
   };
-  //
-  // pause = () => {
-  //   this.setState({ paused: true });
-  // }
-  // 
-  // unpause = () => {
-  //   this.setState({ paused: false });
-  // }
 
   submitInput = () => {
     this.setState({ waitingForInput: false });

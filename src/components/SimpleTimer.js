@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './SimpleTimer.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import { Howl } from 'howler';
+import beep from '../static/beep.mp3';
 
 const SecondsDisplay = ({ seconds }) => {
   return (
@@ -41,6 +43,7 @@ class SimpleTimer extends React.Component {
   componentDidMount() {
     document.addEventListener('keydown', this.props.handleKeyDown);
     document.addEventListener('keydown', this.handleOwnKeyDown);
+    this.beep = new Howl({ src: beep });
     this.start();
   }
 
@@ -89,12 +92,17 @@ class SimpleTimer extends React.Component {
     );
   };
 
+  finish = () => {
+    this.setState({ finished: true }, this.pause);
+    this.beep.play();
+  }
+
   tick = () => {
     if (this.state.paused) return;
     const target = this.state.secondsLeft - 1;
     this.setState({ secondsLeft: target });
     if (target <= 0) {
-      this.setState({ finished: true }, this.pause);
+      this.finish();
     }
   };
 

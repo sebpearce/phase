@@ -14,6 +14,7 @@ module.exports = {
 
   module: {
     loaders: [
+      { test: /\.mp3$/, loader: 'file-loader', exclude: /node_modules/ },
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       {
         test: /\.scss$/,
@@ -34,12 +35,9 @@ module.exports = {
   devServer: {
       historyApiFallback: true
   }
-  
-  // plugins: [
   //   new webpack.optimize.UglifyJsPlugin({
   //     compressor: {
   //       warnings: false,
   //     },
   //   }),
-  // ],
 };
