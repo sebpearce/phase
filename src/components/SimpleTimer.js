@@ -26,36 +26,59 @@ const HoursDisplay = ({ seconds }) => {
   );
 };
 
+const LabelUnderTimer = ({ text }) => {
+  return <span className={styles.labelUnderTimer}>{text}</span>;
+};
+
 class SimpleTimer extends React.Component {
   state = {
     secondsLeft: this.props.seconds,
     paused: false,
     finished: false,
+    labelText: '',
   };
 
   componentDidMount() {
     document.addEventListener('keydown', this.props.handleKeyDown);
+    document.addEventListener('keydown', this.handleOwnKeyDown);
     this.start();
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
     document.removeEventListener('keydown', this.props.handleKeyDown);
+    document.removeEventListener('keydown', this.handleOwnKeyDown);
   }
+
+  handleOwnKeyDown = e => {
+    switch (e.keyCode) {
+      case 32:
+        if (!this.state.paused) {
+          this.pause();
+        } else {
+          this.resume();
+        }
+        break;
+    }
+  };
 
   start = () => {
     clearInterval(this.state.interval);
     const interval = setInterval(this.tick, 1000);
-    this.setState({ interval, paused: false });
+    this.setState({ interval, paused: false, labelText: '' });
   };
 
   resume = () => {
-    if (this.state.paused && this.state.secondsLeft > 0) this.start();
+    if (this.state.paused && this.state.secondsLeft > 0) {
+      this.start();
+    }
   };
 
   pause = () => {
+    console.log('this.state.finished', this.state.finished);
+    const labelText = this.state.finished ? 'Finished.' : 'Paused.';
     clearInterval(this.state.interval);
-    this.setState({ paused: true });
+    this.setState({ paused: true, labelText });
   };
 
   reset = () => {
@@ -67,11 +90,11 @@ class SimpleTimer extends React.Component {
   };
 
   tick = () => {
+    if (this.state.paused) return;
     const target = this.state.secondsLeft - 1;
     this.setState({ secondsLeft: target });
     if (target <= 0) {
-      this.setState({ finished: true });
-      this.pause();
+      this.setState({ finished: true }, this.pause);
     }
   };
 
@@ -93,6 +116,7 @@ class SimpleTimer extends React.Component {
         <button onClick={this.resume}>RESUME</button>
         <button onClick={this.reset}>RESET</button>
         <button onClick={this.props.kill}>KILL</button> */}
+        <LabelUnderTimer text={this.state.labelText} />
       </div>
     );
   }
