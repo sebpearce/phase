@@ -47,7 +47,7 @@ class UntilTimerPage extends React.Component {
 
   render() {
     return (
-      <div className={styles.simpleTimerPage}>
+      <div className={styles.untilTimerPage}>
         {this.state.waitingForInput
           ? <SimpleInputModal
               question={'Until when?'}

@@ -11,6 +11,7 @@ class SimpleInputModal extends React.Component {
           className={styles.input}
           onChange={this.props.setInput}
           onKeyDown={this.props.handleKeyDown}
+          autoFocus
         />
       </div>
     );
