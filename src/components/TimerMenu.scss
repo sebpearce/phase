@@ -1,4 +1,3 @@
-
 .timerMenuContainer {
   display: flex;
   flex-direction: column;
@@ -31,7 +30,7 @@
     height: 40px;
     fill: #fff;
   }
-
+  
   &:nth-of-type(n+2) {
     margin-top: 2em;
   }

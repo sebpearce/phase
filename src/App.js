@@ -9,11 +9,51 @@ import SimpleTimerPage from './components/SimpleTimerPage';
 import UntilTimerPage from './components/UntilTimerPage';
 
 class App extends React.Component {
+  state = {
+    showTimerMenu: true,
+    showCursor: true,
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseleave', this.handleMouseLeave);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseleave', this.handleMouseLeave);
+  }
+
+  handleMouseMove = () => {
+    if (this.mouseTimeout) clearTimeout(this.mouseTimeout);
+    this.setState({ showTimerMenu: true, showCursor: true });
+
+    this.mouseTimeout = setTimeout(() => {
+      this.setState({ showTimerMenu: false, showCursor: false })
+    }, 2000);
+  }
+
+  handleMouseLeave = () => {
+    clearTimeout(this.mouseTimeout);
+    this.setState({ showTimerMenu: false });
+  }
+
+  hideCursor = () => {
+    this.setState({ showCursor: false });
+  }
+
+  showCursor = () => {
+    this.setState({ showCursor: true });
+  }
+
   render() {
+    const appClass = this.state.showCursor ? styles.appContainer : styles.appContainerWithHiddenCursor;
+    const timerMenuClass = this.state.showTimerMenu ? styles.timerMenuVisible : styles.timerMenuHidden;
+
     return (
-      <div className={styles.appContainer}>
+      <div className={appClass}>
         <IconDefs />
-        <div className={styles.timerMenu}>
+        <div className={timerMenuClass}>
           <TimerMenu />
         </div>
         <div className={styles.main}>
