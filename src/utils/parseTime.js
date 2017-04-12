@@ -3,17 +3,17 @@ export const zeroPad = x => {
 };
 
 export const parseSeconds = totalSeconds => {
-  const sec = totalSeconds % 60;
-  return zeroPad(sec);
+  const sec = Math.abs(totalSeconds) % 60;
+  return Math.abs(totalSeconds) > 10 ? zeroPad(sec) : String(sec);
 };
 
 export const parseMinutes = totalSeconds => {
-  const min = Math.floor(totalSeconds / 60) % 60;
+  const min = Math.floor(Math.abs(totalSeconds) / 60) % 60;
   return zeroPad(min);
 };
 
 export const parseHours = totalSeconds => {
-  const hr = Math.floor(totalSeconds / 3600);
+  const hr = Math.floor(Math.abs(totalSeconds) / 3600);
   return zeroPad(hr);
 };
 

@@ -2,11 +2,11 @@
 @import '../global';
 
 .untilDisplay {
-  margin-right: 0.2em;
-  font-weight: 700;
-  font-size: 1.7em;
-  color: white;
-
+  @extend .labelUnderTimer;
+  // margin-right: 0.2em;
+  // font-weight: 700;
+  // font-size: 1.7em;
+  // color: white;
 }
 
 .untilDisplayFinished {
@@ -15,6 +15,6 @@
   color: $timer-finished-color;
 }
 
-.untilTimer {
-  text-align: right;
-}
+// .untilTimer {
+//   text-align: right;
+// }

@@ -3,6 +3,7 @@
 %timeDisplay {
   display: inline-block;
   min-width: 1.1em;
+  text-align: center;
 }
 
 .seconds {
@@ -14,6 +15,10 @@
 }
 
 .hours {
+  @extend %timeDisplay;
+}
+
+.tick {
   @extend %timeDisplay;
 }
 

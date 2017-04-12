@@ -6,30 +6,14 @@ import {
   parseHours,
   convertUnixTime,
 } from '../utils/parseTime';
-
-const SecondsDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.seconds}>
-      {parseSeconds(seconds)}
-    </span>
-  );
-};
-
-const MinutesDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.minutes}>
-      {parseMinutes(seconds)}
-    </span>
-  );
-};
-
-const HoursDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.hours}>
-      {parseHours(seconds)}
-    </span>
-  );
-};
+import { Howl } from 'howler';
+import beep from '../static/beep.mp3';
+import {
+  SecondsDisplay,
+  MinutesDisplay,
+  HoursDisplay,
+  Tick,
+} from './TimeDisplay';
 
 const UntilDisplay = ({ finishAt, isFinished }) => {
   const adverb = isFinished ? 'since' : 'until';
@@ -52,6 +36,7 @@ class UntilTimer extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.props.handleKeyDown);
+    this.beep = new Howl({ src: beep });
     this.start();
   }
 
@@ -64,10 +49,6 @@ class UntilTimer extends React.Component {
     return parseInt((finishAt - Date.now()) / 1000, 10);
   }
 
-  calculateSecondsSince(finishAt) {
-    return parseInt((Date.now() - finishAt) / 1000, 10);
-  }
-
   start = () => {
     clearInterval(this.state.interval);
     const interval = setInterval(this.tick, 200);
@@ -75,26 +56,22 @@ class UntilTimer extends React.Component {
   };
 
   tick = () => {
-    const finishAt = this.props.finishAt;
-    let target;
-    if (this.state.finished) {
-      target = this.calculateSecondsSince(finishAt);
-    } else {
-      target = this.calculateSecondsLeft(finishAt);
-    }
+    const target = this.calculateSecondsLeft(this.props.finishAt);
     this.setState({ secondsLeft: target });
 
-    if (finishAt <= Date.now()) {
+    if (target === 0) {
       if (!this.state.finished) {
         this.setState({ finished: true });
+        this.beep.play();
       }
     }
   };
 
   render() {
-    const className = this.state.finished
+    const className = this.state.secondsLeft < 0
       ? styles.timeContainerFinished
       : styles.timeContainer;
+
     return (
       <div className={styles.untilTimer}>
         <div className={className}>
@@ -106,7 +83,9 @@ class UntilTimer extends React.Component {
             <MinutesDisplay seconds={this.state.secondsLeft} key={'mins'} />,
             ':',
           ]}
-          <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />
+          {this.state.secondsLeft === 0
+            ? <Tick />
+            : <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />}
         </div>
         <UntilDisplay
           finishAt={this.props.finishAt}

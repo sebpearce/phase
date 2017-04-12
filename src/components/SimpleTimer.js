@@ -1,32 +1,9 @@
 import React from 'react';
 import styles from './SimpleTimer.scss';
 import { parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import { SecondsDisplay, MinutesDisplay, HoursDisplay, Tick  } from './TimeDisplay';
 import { Howl } from 'howler';
 import beep from '../static/beep.mp3';
-
-const SecondsDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.seconds}>
-      {parseSeconds(seconds)}
-    </span>
-  );
-};
-
-const MinutesDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.minutes}>
-      {parseMinutes(seconds)}
-    </span>
-  );
-};
-
-const HoursDisplay = ({ seconds }) => {
-  return (
-    <span className={styles.hours}>
-      {parseHours(seconds)}
-    </span>
-  );
-};
 
 const LabelUnderTimer = ({ text }) => {
   return <span className={styles.labelUnderTimer}>{text}</span>;
@@ -95,7 +72,7 @@ class SimpleTimer extends React.Component {
   finish = () => {
     this.setState({ finished: true }, this.pause);
     this.beep.play();
-  }
+  };
 
   tick = () => {
     if (this.state.paused) return;
@@ -118,7 +95,9 @@ class SimpleTimer extends React.Component {
             <MinutesDisplay seconds={this.state.secondsLeft} key={'mins'} />,
             ':',
           ]}
-          <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />
+          {this.state.finished
+            ? <Tick />
+            : <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />}
         </div>
         {/* <button onClick={this.pause}>PAUSE</button>
         <button onClick={this.resume}>RESUME</button>

@@ -17,7 +17,7 @@ describe('zeroPad', () => {
 describe('parseSeconds', () => {
   test('when seconds is 0', () => {
     const seconds = 0;
-    expect(parseTime.parseSeconds(seconds)).toBe('00');
+    expect(parseTime.parseSeconds(seconds)).toBe('0');
   });
 
   test('when seconds is under 60', () => {
@@ -34,9 +34,24 @@ describe('parseSeconds', () => {
     const seconds = 61;
     expect(parseTime.parseSeconds(seconds)).toBe('01');
   });
+
+  test('when seconds is -5', () => {
+    const seconds = -5;
+    expect(parseTime.parseSeconds(seconds)).toBe('5');
+  });
 });
 
 describe('parseMinutes', () => {
+  test('when seconds is -61', () => {
+    const seconds = -61;
+    expect(parseTime.parseMinutes(seconds)).toBe('01');
+  });
+
+  test('when seconds is -8', () => {
+    const seconds = -8;
+    expect(parseTime.parseMinutes(seconds)).toBe('00');
+  });
+
   test('when seconds is 0', () => {
     const seconds = 0;
     expect(parseTime.parseMinutes(seconds)).toBe('00');
@@ -74,6 +89,16 @@ describe('parseMinutes', () => {
 });
 
 describe('parseHours', () => {
+  test('when seconds is -3600', () => {
+    const seconds = -3600;
+    expect(parseTime.parseHours(seconds)).toBe('01');
+  });
+
+  test('when seconds is -5', () => {
+    const seconds = -5;
+    expect(parseTime.parseHours(seconds)).toBe('00');
+  });
+
   test('when seconds is 0', () => {
     const seconds = 0;
     expect(parseTime.parseHours(seconds)).toBe('00');
