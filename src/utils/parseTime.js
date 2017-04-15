@@ -59,10 +59,18 @@ export const convertInputToNumber = input => {
   return result;
 };
 
-export const convertInputToDate = input => {
+export const convertInputToDate = (input, skipForward) => {
   const now = new Date();
   const [y, m, d] = [now.getFullYear(), now.getMonth(), now.getDate()];
-  const time = input.split(/[:.]/);
+  console.log('input', input);
+  let time;
+  if (/\d{4}/.test(input)) {
+    time = [input.slice(0, 2), input.slice(2, 4)];
+  } else {
+    time = input.split(/[:.]/);
+  }
+  console.log('time', time);
   const date = new Date(y, m, d, ...time);
+  if (!skipForward) return date;
   return date < now ? new Date(y, m, d + 1, ...time) : date;
 };

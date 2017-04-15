@@ -12,7 +12,7 @@ class App extends React.Component {
   state = {
     showTimerMenu: true,
     showCursor: true,
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('mousemove', this.handleMouseMove);
@@ -23,32 +23,39 @@ class App extends React.Component {
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseleave', this.handleMouseLeave);
   }
-
+  
   handleMouseMove = () => {
     if (this.mouseTimeout) clearTimeout(this.mouseTimeout);
     this.setState({ showTimerMenu: true, showCursor: true });
 
-    this.mouseTimeout = setTimeout(() => {
-      this.setState({ showTimerMenu: false, showCursor: false })
-    }, 2000);
-  }
+    this.mouseTimeout = setTimeout(
+      () => {
+        this.setState({ showTimerMenu: false, showCursor: false });
+      },
+      2000
+    );
+  };
 
   handleMouseLeave = () => {
     clearTimeout(this.mouseTimeout);
     this.setState({ showTimerMenu: false });
-  }
+  };
 
   hideCursor = () => {
     this.setState({ showCursor: false });
-  }
+  };
 
   showCursor = () => {
     this.setState({ showCursor: true });
-  }
+  };
 
   render() {
-    const appClass = this.state.showCursor ? styles.appContainer : styles.appContainerWithHiddenCursor;
-    const timerMenuClass = this.state.showTimerMenu ? styles.timerMenuVisible : styles.timerMenuHidden;
+    const appClass = this.state.showCursor
+      ? styles.appContainer
+      : styles.appContainerWithHiddenCursor;
+    const timerMenuClass = this.state.showTimerMenu
+      ? styles.timerMenuVisible
+      : styles.timerMenuHidden;
 
     return (
       <div className={appClass}>
@@ -61,8 +68,7 @@ class App extends React.Component {
           <Route path="/until" component={UntilTimerPage} />
           <Route path="/foo" component={SimpleTimerPage} />
         </div>
-        <div className={styles.settingsMenu}>
-        </div>
+        <div className={styles.settingsMenu} />
       </div>
     );
   }

@@ -11,6 +11,11 @@ class UntilTimerPage extends React.Component {
     input: '',
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.waitingForInput !== this.state.waitingForInput ||
+      nextState.input !== this.state.input;
+  }
+
   setInput = e => {
     if (validateUntilInput(e.target.value)) {
       this.setState({ input: e.target.value });

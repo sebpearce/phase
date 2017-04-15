@@ -15,15 +15,21 @@ import {
   Tick,
 } from './TimeDisplay';
 
-const UntilDisplay = ({ finishAt, isFinished }) => {
-  const adverb = isFinished ? 'since' : 'until';
+const UntilDisplay = (
+  { finishAt, isFinished, isFirstMinuteAfterFinishing }
+) => {
+  const adverb = isFirstMinuteAfterFinishing
+    ? 'Finished.'
+    : isFinished ? 'since' : 'until';
   const result = new Date(finishAt).get;
   const className = isFinished
     ? styles.untilDisplayFinished
     : styles.untilDisplay;
+  let text = adverb;
+  if (!isFirstMinuteAfterFinishing) text += ' ' + convertUnixTime(finishAt);
   return (
     <span className={className}>
-      {adverb + ' ' + convertUnixTime(finishAt)}
+      {text}
     </span>
   );
 };
@@ -38,6 +44,7 @@ class UntilTimer extends React.Component {
     document.addEventListener('keydown', this.props.handleKeyDown);
     this.beep = new Howl({ src: beep });
     this.start();
+    console.log('DID MOUNT!');
   }
 
   componentWillUnmount() {
@@ -56,7 +63,10 @@ class UntilTimer extends React.Component {
   };
 
   tick = () => {
-    const target = this.calculateSecondsLeft(this.props.finishAt);
+    const target = this.calculateSecondsLeft(
+      this.props.finishAt,
+      !this.state.finished
+    );
     this.setState({ secondsLeft: target });
 
     if (target === 0) {
@@ -68,28 +78,32 @@ class UntilTimer extends React.Component {
   };
 
   render() {
-    const className = this.state.secondsLeft < 0
+    const isFirstMinuteAfterFinishing = this.state.secondsLeft >= -59 &&
+      this.state.secondsLeft <= 0;
+
+    const className = this.state.secondsLeft <= -60
       ? styles.timeContainerFinished
       : styles.timeContainer;
 
     return (
       <div className={styles.untilTimer}>
         <div className={className}>
-          {this.state.secondsLeft >= 3600 && [
+          {Math.abs(this.state.secondsLeft) >= 3600 && [
             <HoursDisplay seconds={this.state.secondsLeft} key={'hrs'} />,
             ':',
           ]}
-          {this.state.secondsLeft >= 60 && [
+          {Math.abs(this.state.secondsLeft) >= 60 && [
             <MinutesDisplay seconds={this.state.secondsLeft} key={'mins'} />,
             ':',
           ]}
-          {this.state.secondsLeft === 0
+          {isFirstMinuteAfterFinishing
             ? <Tick />
             : <SecondsDisplay seconds={this.state.secondsLeft} key={'secs'} />}
         </div>
         <UntilDisplay
           finishAt={this.props.finishAt}
           isFinished={this.state.finished}
+          isFirstMinuteAfterFinishing={isFirstMinuteAfterFinishing}
         />
       </div>
     );
