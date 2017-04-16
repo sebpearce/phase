@@ -7,6 +7,7 @@ import TimerMenu from './components/TimerMenu';
 import MultiTimerPage from './MultiTimerPage';
 import SimpleTimerPage from './components/SimpleTimerPage';
 import UntilTimerPage from './components/UntilTimerPage';
+import SimpleStopwatchPage from './components/SimpleStopwatchPage';
 
 class App extends React.Component {
   state = {
@@ -66,7 +67,7 @@ class App extends React.Component {
         <div className={styles.main}>
           <Route exact path="/" component={SimpleTimerPage} />
           <Route path="/until" component={UntilTimerPage} />
-          <Route path="/foo" component={SimpleTimerPage} />
+          <Route path="/stopwatch" component={SimpleStopwatchPage} />
         </div>
         <div className={styles.settingsMenu} />
       </div>

@@ -1,0 +1,5 @@
+@import 'timeDisplay';
+
+.MillisecondsDisplay {
+  @extend %timeDisplay;
+}

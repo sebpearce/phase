@@ -19,7 +19,7 @@ class TimerMenu extends React.Component {
                 <Icon id="timer-until" />
               </li>
             </NavLink>
-            <NavLink to="/foo" className={styles.item} activeClassName={styles.selected}>
+            <NavLink to="/stopwatch" className={styles.item} activeClassName={styles.selected}>
               <li>
                 <Icon id="stopwatch" />
               </li>

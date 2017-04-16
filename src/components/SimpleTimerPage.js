@@ -10,7 +10,7 @@ class SimpleTimerPage extends React.Component {
     waitingForInput: true,
     input: '',
   };
-
+  
   // TODO: Tests for helpers
 
   setInput = e => {
