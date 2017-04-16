@@ -1,6 +1,11 @@
 import React from 'react';
 import styles from './SimpleStopwatch.scss';
-import { parseMilliseconds, parseSeconds, parseMinutes, parseHours } from '../utils/parseTime';
+import {
+  parseMilliseconds,
+  parseSeconds,
+  parseMinutes,
+  parseHours,
+} from '../utils/parseTime';
 import {
   SecondsDisplay,
   MinutesDisplay,
@@ -8,20 +13,17 @@ import {
   Tick,
 } from './TimeDisplay';
 
-// const LabelUnderTimer = ({ text }) => {
-//   return <span className={styles.labelUnderTimer}>{text}</span>;
-// };
-
-const MillisecondsDisplay = ({ ms }) => {
-  return <span className={styles.MillisecondsDisplay}>{parseMilliseconds(ms)}</span>;
+const LabelUnderTimer = ({ text }) => {
+  return <span className={styles.labelUnderTimer}>{text}</span>;
 };
 
 class SimpleStopwatch extends React.Component {
   state = {
-    msElapsed: 0,
+    startTime: Date.now(),
+    secondsElapsed: 0,
+    totalSecondsElapsed: 0,
     paused: false,
-    finished: false,
-    // labelText: '',
+    labelText: '',
   };
 
   componentDidMount() {
@@ -50,45 +52,56 @@ class SimpleStopwatch extends React.Component {
 
   start = () => {
     clearInterval(this.state.interval);
-    const interval = setInterval(this.tick, 100);
+    const interval = setInterval(this.tick, 200);
     this.setState({ interval, paused: false });
-    // this.setState({ interval, paused: false, labelText: '' });
   };
 
   resume = () => {
     if (this.state.paused) {
-      this.start();
+      let now = Date.now();
+      console.log('now', now);
+      this.setState({ startTime: now, labelText: '' }, this.start);
     }
   };
 
   pause = () => {
-    // const labelText = this.state.finished ? 'Finished.' : 'Paused.';
+    const labelText = 'Paused.';
     clearInterval(this.state.interval);
-    this.setState({ paused: true });
-    // this.setState({ paused: true, labelText });
+    this.setState(prevState => {
+      return {
+        paused: true,
+        totalSecondsElapsed: prevState.totalSecondsElapsed +
+          prevState.secondsElapsed,
+        secondsElapsed: 0,
+        labelText,
+      };
+    });
   };
 
   // reset = () => {
   //   clearInterval(this.state.interval);
   //   this.setState(
-  //     { msElapsed: this.props.seconds, finished: false },
+  //     { secondsElapsed: this.props.seconds, finished: false },
   //     this.start
   //   );
   // };
 
-  finish = () => {
-    this.setState({ finished: true }, this.pause);
-    // this.beep.play();
+  calculateSecondsBetweenNowAnd = a => {
+    return Math.floor((Date.now() - a) / 1000);
   };
 
   tick = () => {
     if (this.state.paused) return;
-    const target = this.state.msElapsed + 100;
-    this.setState({ msElapsed: target });
+    const target = this.calculateSecondsBetweenNowAnd(this.state.startTime);
+    console.log('target', target);
+    this.setState(prevState => {
+      return { secondsElapsed: target };
+    });
   };
 
   render() {
-    const secondsElapsed = parseInt(this.state.msElapsed / 1000);
+    const secondsElapsed =
+      this.state.totalSecondsElapsed + this.state.secondsElapsed;
     console.log('secondsElapsed', secondsElapsed);
 
     return (
@@ -102,10 +115,9 @@ class SimpleStopwatch extends React.Component {
             <MinutesDisplay seconds={secondsElapsed} key={'mins'} />,
             ':',
           ]}
-          {/* {[<SecondsDisplay seconds={secondsElapsed} key={'secs'} />, '.']} */}
-          {<MillisecondsDisplay ms={this.state.msElapsed} key={'ms'} />}
+          {<SecondsDisplay seconds={secondsElapsed} key={'secs'} />}
         </div>
-        {/* <LabelUnderTimer text={this.state.labelText} /> */}
+        <LabelUnderTimer text={this.state.labelText} />
       </div>
     );
   }

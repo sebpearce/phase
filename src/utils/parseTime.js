@@ -2,11 +2,6 @@ export const zeroPad = x => {
   return x < 10 ? '0'.concat(x) : String(x);
 };
 
-export const parseMilliseconds = totalMilliseconds => {
-  const sec = ((totalMilliseconds / 1000) % 60).toFixed(1);
-  return sec < 10 ? zeroPad(sec) : String(sec);
-};
-
 export const parseSeconds = totalSeconds => {
   const sec = Math.abs(totalSeconds) % 60;
   return Math.abs(totalSeconds) > 10 ? zeroPad(sec) : String(sec);
